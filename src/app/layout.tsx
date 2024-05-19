@@ -5,7 +5,7 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "sMail",
+  title: "eSpam",
   description: "This Next.js application allows users to send emails to multiple recipients individually, free of charge.",
 };
 
