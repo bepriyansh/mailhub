@@ -38,11 +38,15 @@ export default function RootLayout({
               direction="horizontal"
               className="min-h-[200px]"
             >
-              <ResizablePanel defaultSize={20}>
-                <Sidebar />
+              <ResizablePanel defaultSize={23}>
+                <div className="flex h-full items-start justify-start w-full p-6 min-w-72">
+                  <Sidebar />
+                </div>
               </ResizablePanel>
               <ResizableHandle withHandle />
-              <ResizablePanel defaultSize={80}>{children}</ResizablePanel>
+              <ResizablePanel defaultSize={77}>
+                <div className="min-w-72">{children}</div>
+              </ResizablePanel>
             </ResizablePanelGroup>
           </main>
           <Toaster />
