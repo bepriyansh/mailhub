@@ -2,7 +2,13 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme/theme-provider";
-import Header from "@/components/custom/header";
+import { Toaster } from "@/components/ui/sonner";
+import {
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
+} from "@/components/ui/resizable";
+import Sidebar from "@/components/custom/sidebar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -27,8 +33,19 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <Header />
-          {children}
+          <main className="h-screen">
+            <ResizablePanelGroup
+              direction="horizontal"
+              className="min-h-[200px]"
+            >
+              <ResizablePanel defaultSize={20}>
+                <Sidebar />
+              </ResizablePanel>
+              <ResizableHandle withHandle />
+              <ResizablePanel defaultSize={80}>{children}</ResizablePanel>
+            </ResizablePanelGroup>
+          </main>
+          <Toaster />
         </ThemeProvider>
       </body>
     </html>
