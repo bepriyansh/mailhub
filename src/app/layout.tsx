@@ -9,6 +9,7 @@ import {
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
 import Sidebar from "@/components/custom/sidebar";
+import Header from "@/components/custom/header";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -45,7 +46,10 @@ export default function RootLayout({
               </ResizablePanel>
               <ResizableHandle withHandle />
               <ResizablePanel defaultSize={77}>
-                <div className="min-w-72">{children}</div>
+                <div className="min-w-72">
+                  <Header />
+                  {children}
+                </div>
               </ResizablePanel>
             </ResizablePanelGroup>
           </main>

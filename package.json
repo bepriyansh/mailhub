@@ -16,6 +16,7 @@
     "@radix-ui/react-slot": "^1.0.2",
     "@radix-ui/react-switch": "^1.0.3",
     "@types/nodemailer": "^6.4.15",
+    "@types/xlsx": "^0.0.36",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "lucide-react": "^0.378.0",
@@ -27,7 +28,8 @@
     "react-resizable-panels": "^2.0.19",
     "sonner": "^1.4.41",
     "tailwind-merge": "^2.3.0",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@types/node": "^20",

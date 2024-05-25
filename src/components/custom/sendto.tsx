@@ -1,3 +1,5 @@
+"use client";
+import * as XLSX from "xlsx";
 import React, { useState } from "react";
 import {
   Popover,
@@ -6,13 +8,78 @@ import {
 } from "@/components/ui/popover";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
+import { Label } from "../ui/label";
+import { isValidEmail } from "@/utils/checkValidEmail";
+
+const getEmailCol = (data: any[][]): number => {
+  const maxRowsToCheck = 100;
+  let maxValidEmails = 0;
+  let index = 0;
+
+  data[0].forEach((col: string, colIndex: number) => {
+    let validEmailCount = 0;
+    for (let rowIndex = 1; rowIndex <= maxRowsToCheck; rowIndex++) {
+      const cellValue = data[rowIndex]?.[colIndex];
+      if (isValidEmail(cellValue)) {
+        validEmailCount++;
+      }
+    }
+    if (validEmailCount > maxValidEmails) {
+      maxValidEmails = validEmailCount;
+      index = colIndex;
+    }
+  });
+  return index;
+};
+
+const getEmailsFromCol = (data: any[][], columnIndex: number): string[] => {
+  const validEmails: string[] = [];
+
+  for (let rowIndex = 1; rowIndex < data.length; rowIndex++) {
+    const cellValue = data[rowIndex]?.[columnIndex];
+    if (typeof cellValue === "string") {
+      const emails = cellValue.split(/[, ]+/).map((email) => email.trim());
+      emails.forEach((email) => {
+        if (isValidEmail(email)) {
+          validEmails.push(email);
+        }
+      });
+    }
+  }
+
+  return validEmails;
+};
 
 const SendTo = () => {
-  const [emails, setEmails] = useState([]);
+  const [emails, setEmails] = useState<string[]>([]);
+
+  const addExcelFile = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const data = new Uint8Array(e.target?.result as ArrayBuffer);
+        const workbook = XLSX.read(data, { type: "array" });
+        const sheetName = workbook.SheetNames[0];
+        const worksheet = workbook.Sheets[sheetName];
+        const jsonData = XLSX.utils.sheet_to_json<any>(worksheet, {
+          header: 1,
+        });
+        const index = getEmailCol(jsonData);
+        const emailIds = getEmailsFromCol(jsonData, index);
+        setEmails((prevEmailIds) => [...prevEmailIds, ...emailIds]);
+      };
+      reader.readAsArrayBuffer(file);
+    }
+  };
+
   return (
     <div className="flex flex-col w-full gap-5">
       <div className="flex flex-col w-full justify-normal items-start border rounded-lg p-2 gap-2">
-        <div className="text-sm px-2">Send to :</div>
+        <div className="flex justify-between items-center w-full px-2">
+          <div className="text-sm">Send to :</div>
+          <div className="text-muted-foreground text-xs">{emails.length} emails</div>
+        </div>
         <div className="flex flex-wrap justify-start items-center w-full gap-1 max-h-96 overflow-y-auto">
           {emails.length === 0 && (
             <div className="text-xs text-muted-foreground text-center w-full py-8">
@@ -56,7 +123,18 @@ const SendTo = () => {
             <Button>Add</Button>
           </PopoverContent>
         </Popover>
-        <Button className="max-w-80">Upload via Excel</Button>
+        <Input
+          type="file"
+          accept=".xlsx, .xls"
+          className="hidden"
+          id="fileupload"
+          onChange={addExcelFile}
+        />
+        <Label htmlFor="fileupload">
+          <div className="border p-3 text-primary-foreground rounded-lg bg-primary cursor-pointer ">
+            Upload via Excel
+          </div>
+        </Label>
       </div>
     </div>
   );
