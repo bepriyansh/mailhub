@@ -66,7 +66,7 @@ const MailForm: React.FC = () => {
           {attachments.length > 0 && (
             <ul className="list-decimal pl-5">
               {attachments.map((attachment, index) => (
-                <li key={index} className="text-sm text-gray-700">
+                <li key={index} className="text-sm text-muted-foreground">
                   {attachment.name}
                 </li>
               ))}
