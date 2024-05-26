@@ -1,6 +1,6 @@
 "use client";
 import * as XLSX from "xlsx";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Popover,
   PopoverContent,
@@ -11,9 +11,9 @@ import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { getEmailCol, getEmailsFromCol } from "@/utils/emailUtils";
 
-
 const SendTo = () => {
   const [emails, setEmails] = useState<string[]>([]);
+
 
   const addExcelFile = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -44,7 +44,7 @@ const SendTo = () => {
             {emails.length} emails
           </div>
         </div>
-        <div className="flex flex-wrap justify-start items-center w-full gap-1 max-h-96 overflow-y-auto">
+        <div className="flex flex-wrap justify-start items-center w-full gap-1 max-h-[calc(100vh-380px)] overflow-y-auto">
           {emails.length === 0 && (
             <div className="text-xs text-muted-foreground text-center w-full py-8">
               Add mail addresses

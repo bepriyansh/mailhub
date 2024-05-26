@@ -26,11 +26,10 @@ const MailForm: React.FC = () => {
   };
 
   return (
-    <div className="flex justify-center items-start w-full h-screen p-2">
-      <div className="flex flex-col gap-5 w-full max-h-[calc(100vh-80px)] overflow-auto">
+    <div className="flex justify-center items-start w-full h-screen p-1">
+      <div className="flex flex-col gap-5 w-full max-h-[calc(100vh-80px)] overflow-auto p-1">
         <Textarea
           placeholder="Write your mail here..."
-          rows={28}
           className="resize-none min-h-[calc(100vh-180px)]"
           value={mailText}
           onChange={(e) => setMailText(e.target.value)}
