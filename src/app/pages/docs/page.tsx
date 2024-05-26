@@ -31,7 +31,7 @@ const convertUrlsToLinksInLine = (line: string) => {
 };
 
 const loginMailLine =
-  "Enable 2-Step Verification and generate Application password for your google account, then you can use the generated password to send emails using nodemailer. To do so you need to do the following:";
+  "Enable 2-Step Verification and generate Application password for your google account, then you can use email and the generated password to send emails using our website. To do so you need to do the following:";
 
 const loginSteps = `Go to your Google account at https://myaccount.google.com/
   Go to Security
