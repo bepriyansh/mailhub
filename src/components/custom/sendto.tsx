@@ -9,46 +9,8 @@ import {
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
-import { isValidEmail } from "@/utils/checkValidEmail";
+import { getEmailCol, getEmailsFromCol } from "@/utils/emailUtils";
 
-const getEmailCol = (data: any[][]): number => {
-  const maxRowsToCheck = 100;
-  let maxValidEmails = 0;
-  let index = 0;
-
-  data[0].forEach((col: string, colIndex: number) => {
-    let validEmailCount = 0;
-    for (let rowIndex = 1; rowIndex <= maxRowsToCheck; rowIndex++) {
-      const cellValue = data[rowIndex]?.[colIndex];
-      if (isValidEmail(cellValue)) {
-        validEmailCount++;
-      }
-    }
-    if (validEmailCount > maxValidEmails) {
-      maxValidEmails = validEmailCount;
-      index = colIndex;
-    }
-  });
-  return index;
-};
-
-const getEmailsFromCol = (data: any[][], columnIndex: number): string[] => {
-  const validEmails: string[] = [];
-
-  for (let rowIndex = 1; rowIndex < data.length; rowIndex++) {
-    const cellValue = data[rowIndex]?.[columnIndex];
-    if (typeof cellValue === "string") {
-      const emails = cellValue.split(/[, ]+/).map((email) => email.trim());
-      emails.forEach((email) => {
-        if (isValidEmail(email)) {
-          validEmails.push(email);
-        }
-      });
-    }
-  }
-
-  return validEmails;
-};
 
 const SendTo = () => {
   const [emails, setEmails] = useState<string[]>([]);
@@ -78,7 +40,9 @@ const SendTo = () => {
       <div className="flex flex-col w-full justify-normal items-start border rounded-lg p-2 gap-2">
         <div className="flex justify-between items-center w-full px-2">
           <div className="text-sm">Send to :</div>
-          <div className="text-muted-foreground text-xs">{emails.length} emails</div>
+          <div className="text-muted-foreground text-xs">
+            {emails.length} emails
+          </div>
         </div>
         <div className="flex flex-wrap justify-start items-center w-full gap-1 max-h-96 overflow-y-auto">
           {emails.length === 0 && (
