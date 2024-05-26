@@ -16,7 +16,7 @@
     "@radix-ui/react-slot": "^1.0.2",
     "@radix-ui/react-switch": "^1.0.3",
     "@types/nodemailer": "^6.4.15",
-    "@types/xlsx": "^0.0.36",
+    "@types/xlsx": "^0.0.35",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "cookies-next": "^4.2.1",

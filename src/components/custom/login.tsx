@@ -45,7 +45,7 @@ const Login = () => {
       fetch("/api/auth", {
         method: "POST",
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${process.env.SECRET_KEY as string}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify(creds),
