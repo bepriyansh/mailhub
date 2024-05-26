@@ -13,7 +13,8 @@ const Sidebar = () => {
         <Login />
         <SendTo />
       </div>
-      <div className="flex w-full justify-center items-center text-muted-foreground">
+      <div className="flex w-full justify-center items-center text-muted-foreground gap-1">
+        <div>copyright</div>
         <Link
           href="https://priyaaanshh.vercel.app/"
           className="text-primary"
