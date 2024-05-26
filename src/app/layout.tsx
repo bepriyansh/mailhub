@@ -14,7 +14,7 @@ import Header from "@/components/custom/header";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "maiLkaro",
+  title: "mailhub",
   description:
     "This Next.js application allows users to send emails to multiple recipients individually, free of charge.",
 };
