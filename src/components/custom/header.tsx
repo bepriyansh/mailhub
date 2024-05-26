@@ -11,7 +11,12 @@ const Header = () => {
           Bulk mailing service
         </div>
       </Link>
-      <ThemeToggle />
+      <div className="flex justify-start items-center gap-5">
+        <Link href="/pages/docs" className="text-muted-foreground">
+          Docs
+        </Link>
+        <ThemeToggle />
+      </div>
     </div>
   );
 };
