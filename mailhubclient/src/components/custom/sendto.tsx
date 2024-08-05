@@ -53,7 +53,7 @@ const SendTo = () => {
           {emails.map((email, i) => (
             <Popover key={i}>
               <PopoverTrigger>
-                <div className="border rounded-lg px-2 py-1 cursor-pointer text-sm bg-white/10">
+                <div className="border rounded-lg px-2 py-1 cursor-pointer text-sm bg-white/10 break-words text-left">
                   {email}
                 </div>
               </PopoverTrigger>
