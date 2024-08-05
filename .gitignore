@@ -1,36 +1,37 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
-/node_modules
-/.pnp
-.pnp.js
-.yarn/install-state.gz
+/mailhubclient/node_modules
+/mailhubserver/node_modules
+/mailhubclient/.pnp
+/mailhubclient/.pnp.js
+/mailhubclient/.yarn/install-state.gz
 
 # testing
-/coverage
+/mailhubclient/coverage
 
 # next.js
-/.next/
-/out/
+/mailhubclient/.next/
+/mailhubclient/out/
 
 # production
-/build
+/mailhubclient/build
 
 # misc
-.DS_Store
-*.pem
+/mailhubclient/.DS_Store
+/mailhubclient/*.pem
 
 # debug
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
+/mailhubclient/npm-debug.log*
+/mailhubclient/yarn-debug.log*
+/mailhubclient/yarn-error.log*
 
 # local env files
-.env*.local
+/mailhubclient/.env*.local
 
 # vercel
-.vercel
+/mailhubclient/.vercel
 
 # typescript
-*.tsbuildinfo
-next-env.d.ts
+/mailhubclient/*.tsbuildinfo
+/mailhubclient/next-env.d.ts
