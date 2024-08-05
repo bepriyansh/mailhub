@@ -10,10 +10,18 @@ import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { getEmailCol, getEmailsFromCol } from "@/utils/emailUtils";
+import { useDispatch, useSelector } from 'react-redux';
+import { setRecipients } from '../../store/emailSlice'
+
 
 const SendTo = () => {
+  const dispatch = useDispatch();
+
   const [emails, setEmails] = useState<string[]>([]);
 
+  useEffect(() => {
+    dispatch(setRecipients(emails));
+  }, [emails]);
 
   const addExcelFile = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];

@@ -6,13 +6,14 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { getCookie, deleteCookie } from "cookies-next";
 
-const getAuthToken = () => {
+export const getAuthToken = () => {
   const token = getCookie("auth-token");
   const email = getCookie("email");
   return [token, email];
 };
 
 const Login = () => {
+
   const router = useRouter();
   const [token, setToken] = useState<string>();
   const [email, setEmail] = useState<string>();
@@ -55,7 +56,7 @@ const Login = () => {
           toast(data.message, {
             action: {
               label: "Close",
-              onClick: () => {},
+              onClick: () => { },
             },
           })
         )

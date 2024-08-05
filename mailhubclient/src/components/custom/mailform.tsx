@@ -1,10 +1,13 @@
 "use client";
-import React, { useState, ChangeEvent } from "react";
+import React, { useState, ChangeEvent, useEffect } from "react";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "../ui/button";
 import { Send } from "./send";
 import { Plus } from "lucide-react";
 import { Label } from "../ui/label";
+import { useDispatch} from 'react-redux';
+import { setSubject, setText } from '../../store/emailSlice'
+import { Input } from "../ui/input";
 
 interface Attachment {
   name: string;
@@ -12,8 +15,20 @@ interface Attachment {
 }
 
 const MailForm: React.FC = () => {
+  const dispatch = useDispatch();
+
+  const [mailSubject, setMailSubject] = useState<string>("");
   const [mailText, setMailText] = useState<string>("");
   const [attachments, setAttachments] = useState<Attachment[]>([]);
+
+  useEffect(() => {
+    dispatch(setSubject(mailSubject));
+  }, [mailSubject]);
+
+  useEffect(() => {
+    dispatch(setText(mailText));
+  }, [mailText]);
+
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
@@ -29,6 +44,12 @@ const MailForm: React.FC = () => {
     <div className="flex justify-center items-start w-full h-screen">
       <div className="flex flex-col items-center w-full max-h-[calc(100vh-60px)] overflow-auto">
         <div className="w-full max-w-[1440px] px-4 py-2">
+          <Input
+            className="mb-2"
+            placeholder="Subject"
+            value={mailSubject}
+            onChange={(e) => setMailSubject(e.target.value)}
+          />
           <Textarea
             placeholder="Write your mail here..."
             className="resize-none min-h-[calc(100vh-180px)]"

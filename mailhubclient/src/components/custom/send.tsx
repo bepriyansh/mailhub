@@ -2,19 +2,53 @@
 import { toast } from "sonner"
 
 import { Button } from "@/components/ui/button"
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store';
+import { getAuthToken } from "./login";
 
 export function Send() {
+  const emailState = useSelector((state: RootState) => state.email);
+
+  const sendMail = async () => {
+    let [tok, mail] = getAuthToken();
+    const mailData = {
+      recipients: emailState.recipients,
+      subject: emailState.subject,
+      text: emailState.text,
+      token: tok,
+    };
+
+    try {
+      fetch("/api/sendmails", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${process.env.SECRET_KEY as string}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(mailData),
+      })
+        .then((res) => res.json())
+        .then((data) =>
+          toast(data.message, {
+            action: {
+              label: "Close",
+              onClick: () => { },
+            },
+          })
+        )
+    } catch (error) {
+      toast("Error", {
+        description: "Error while sending mails",
+        action: {
+          label: "Close",
+          onClick: () => { },
+        },
+      })
+    }
+  }
   return (
     <Button
-      onClick={() =>
-        toast("Event has been created", {
-          description: "Sunday, December 03, 2023 at 9:00 AM",
-          action: {
-            label: "Undo",
-            onClick: () => console.log("Undo"),
-          },
-        })
-      }
+      onClick={() => sendMail()}
     >
       Send
     </Button>
