@@ -4,7 +4,6 @@ import { NextRequest, NextResponse } from "next/server";
 export async function POST(request: NextRequest) {
   const data = await request.json();
   const decodedToken = detokenizer(data.token);
-  console.log(decodedToken);
 
   const mailData = {
     recipients: data.recipients,
