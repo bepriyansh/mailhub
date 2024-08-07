@@ -34,7 +34,7 @@ This project utilizes a microservice architecture to handle email sending. The p
     - Uses Nodemailer for sending emails.
 
 3. **BullMQ**:
-    - A job queueing system based on Redis, used to manage the processing of email sending jobs.
+    - A job queueing system based on Redis, used to manage the concurrent processing of email sending jobs.
 
 4. **Nodemailer**:
     - A module for Node.js applications to send emails.
