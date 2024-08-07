@@ -6,14 +6,16 @@ import { sendEmail } from './utils/sendMail.js';
 // }
 
 // export const sendMail = async (job) => {
-//     await addDelay(0);
+//     await addDelay(2);
 // }
 
+const concurrency = 5;
 const worker = new Worker('email-queue', sendEmail, {
     connection: {
         host: 'localhost',
         port: 6379
-    }
+    },
+    concurrency: concurrency
 });
 
 worker.on('completed', job => {
