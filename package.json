@@ -1,22 +1,16 @@
 {
-  "name": "mailhubserver",
+  "name": "mailhub",
   "version": "1.0.0",
   "main": "index.js",
-  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon index.js"
+    "start":"concurrently \"docker run -itd -p 6379:6379 redis\" \"cd mailhubserver && node worker.js\" \"cd mailhubserver && npm start\" \"cd mailhubclient && npm run dev\""
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "bullmq": "^5.12.0",
-    "express": "^4.19.2",
-    "nodemailer": "^6.9.14"
-  },
-  "devDependencies": {
-    "nodemon": "^3.1.4"
+    "concurrently": "^8.2.2"
   }
 }
