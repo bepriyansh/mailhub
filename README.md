@@ -89,12 +89,11 @@ In the Node.js server, BullMQ is used to manage the email sending process effici
     - The `concurrently` package is used to run both the Next.js server and the BullMQ worker.
 
     ```json
-      "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1",
-        "start": "concurrently \"docker run -itd -p 6379:6379 redis\" \"cd mailhubserver && node worker.js\" \"cd mailhubserver && npm start\" \"cd mailhubclient && npm run dev\"",
-        "ready": "concurrently \"cd mailhubserver && npm i\" \"cd mailhubclient && npm i\""
-      }
+    "scripts": {
+        "start": "concurrently \"command 1\" \"command 2\"",
+    }
     ```
+
 
 By using BullMQ, we can efficiently handle a large number of email sending tasks, ensuring that the system remains responsive and scalable.
 
