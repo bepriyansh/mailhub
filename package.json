@@ -4,7 +4,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start":"concurrently \"docker run -itd -p 6379:6379 redis\" \"cd mailhubserver && node worker.js\" \"cd mailhubserver && npm start\" \"cd mailhubclient && npm run dev\""
+    "start":"concurrently \"docker run -itd -p 6379:6379 redis\" \"cd mailhubserver && node worker.js\" \"cd mailhubserver && npm start\" \"cd mailhubclient && npm run dev\"",
+    "install":"concurrently \"cd mailhubserver && npm i\" \"cd mailhubclient && npm i\""
   },
   "keywords": [],
   "author": "",
