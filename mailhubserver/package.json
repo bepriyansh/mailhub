@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon index.js"
+    "start":  "concurrently \"docker run -itd -p 6379:6379 redis\" \"node worker.js\" \"nodemon index.js\""
   },
   "keywords": [],
   "author": "",
@@ -13,6 +13,7 @@
   "description": "",
   "dependencies": {
     "bullmq": "^5.12.0",
+    "concurrently": "^8.2.2",
     "express": "^4.19.2",
     "nodemailer": "^6.9.14"
   },
