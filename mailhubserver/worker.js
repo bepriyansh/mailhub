@@ -9,7 +9,7 @@ import { sendEmail } from './utils/sendMail.js';
 //     await addDelay(2);
 // }
 
-const concurrency = 5;
+const concurrency = 50;
 const worker = new Worker('email-queue', sendEmail, {
     connection: {
         host: 'localhost',
