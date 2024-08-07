@@ -9,7 +9,7 @@ const emailQueue = new Queue('email-queue', {
 });
 
 export const addEmailToQueue = async (mailData) => {
-    const res = await emailQueue.add('email to priyansh', mailData,
+    const res = await emailQueue.add('email data', mailData,
         {
             // delay: 1000,
             attempts: 2

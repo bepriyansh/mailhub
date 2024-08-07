@@ -1,13 +1,13 @@
 import { Worker } from 'bullmq';
 import { sendEmail } from './utils/sendMail.js';
 
-export const addDelay = async (time) => {
-    return new Promise((resolve, reject) => setTimeout(() => resolve(), 1000 * time))
-}
+// export const addDelay = async (time) => {
+//     return new Promise((resolve, reject) => setTimeout(() => resolve(), 1000 * time))
+// }
 
-export const sendMail = async (job) => {
-    await addDelay(0);
-}
+// export const sendMail = async (job) => {
+//     await addDelay(0);
+// }
 
 const worker = new Worker('email-queue', sendEmail, {
     connection: {
