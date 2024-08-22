@@ -28,7 +28,7 @@
 /mailhubclient/yarn-error.log*
 
 # local env files
-/mailhubclient/.env*.local
+# /mailhubclient/.env*.local
 
 # vercel
 /mailhubclient/.vercel
