@@ -28,6 +28,7 @@ export async function POST(request: NextRequest) {
     const responseData = await response.json();
     return NextResponse.json({ message: "Mail sent successfully", data: responseData });
   } catch (error) {
+    console.log(error)
     return NextResponse.json({ error: "Failed to send mail" }, { status: 500 });
   }
 }
