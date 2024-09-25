@@ -13,7 +13,7 @@ export async function POST(request: NextRequest) {
     mailPassword: decodedToken.password,
   };
   try {
-    const response = await fetch("http://localhost:8080/api/v1/mail", {
+    const response = await fetch("https://api-mailhub.vercel.app/api/v1/mail", {
       method: "POST",
       headers: {
         Authorization: `Bearer ${process.env.SECRET_KEY as string}`,

@@ -12,7 +12,9 @@ export default class EmailProcessor extends MessageProcessor {
     // The process method returns a promise and resolves after a delay.
     async process(message) {
         return new Promise((resolve,reject) => {
-            sendEmail(message).then(resolve).catch(reject);
+            setTimeout(() => {
+                sendEmail(message).then(resolve).catch(reject);
+            }, message.delay | 0);
         });
     }
 }
