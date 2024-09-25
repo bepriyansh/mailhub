@@ -4,17 +4,15 @@
     This adheres to the Open/Closed Principle, allowing extension without modifying the MessageQueue.
 */
 
+import { sendEmail } from "../utils/sendMail.js";
 import MessageProcessor from "./MessageProcessor.js";
 
 export default class EmailProcessor extends MessageProcessor {
     // Simulates processing a message (sending an email).
     // The process method returns a promise and resolves after a delay.
     async process(message) {
-        return new Promise((resolve) => {
-            setTimeout(() => {
-                console.log(`Sending email: ${message.data}`);
-                resolve();  // Simulate email sent successfully
-            }, message.delay || 1000); // Default delay of 1 second if not provided
+        return new Promise((resolve,reject) => {
+            sendEmail(message).then(resolve).catch(reject);
         });
     }
 }

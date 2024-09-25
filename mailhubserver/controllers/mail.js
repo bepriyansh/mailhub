@@ -1,4 +1,4 @@
-import { addEmailToQueue } from "../producer.js";
+import QueueSystem from "../queue/queueSystem.js";
 
 export const mail = async (req, res, next) => {
     const {
@@ -6,8 +6,13 @@ export const mail = async (req, res, next) => {
         subject,
         text,
         mailId,
-        mailPassword } = req.body;
+        mailPassword 
+    } = req.body;
+
     try {
+        // Get the producer from the QueueSystem singleton
+        const producer = QueueSystem.getProducer();
+
         for (let i = 0; i < recipients.length; i++) {
             const mailData = {
                 to: recipients[i],
@@ -16,11 +21,13 @@ export const mail = async (req, res, next) => {
                 mailId,
                 mailPassword
             }
-            addEmailToQueue(mailData);
+            // Add email to the queue via the producer
+            producer.produce(mailData);
         }
+
         res.status(200).json({ message: "sent" });
     } catch (error) {
         next(error);
-        console.log(error)
+        console.log(error);
     }
-}
+};

@@ -13,7 +13,7 @@ export default class Producer {
         const message = {
             id: Date.now(),       // Use current timestamp as a unique ID for the message
             data: mailData,       // The content of the message (email content)
-            delay: 2000,          // Optional delay before processing the message
+            delay: 0,          // Optional delay before processing the message
         };
         this.queue.addMessage(message);  // Add the message to the queue
         console.log(`Message added to queue. ID: ${message.id}`);
