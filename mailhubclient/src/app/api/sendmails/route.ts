@@ -13,7 +13,7 @@ export async function POST(request: NextRequest) {
     mailPassword: decodedToken.password,
   };
   try {
-    const response = await fetch("https://mailhub-mpgh.onrender.com/api/v1/mail", {
+    const response = await fetch(`${process.env.MAILHUB_SERVER as string}/api/v1/mail`, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${process.env.SECRET_KEY as string}`,
@@ -27,8 +27,8 @@ export async function POST(request: NextRequest) {
 
     const responseData = await response.json();
     return NextResponse.json({ message: "Mail sent successfully", data: responseData });
-  } catch (error) {
-    console.log(error)
-    return NextResponse.json({ error: "Failed to send mail" }, { status: 500 });
+  } catch (error) { 
+    console.error("Error during mail send:", error); // More detailed error logging
+    return NextResponse.json({ error: `Failed to send mail: ${error}` }, { status: 500 });
   }
 }
