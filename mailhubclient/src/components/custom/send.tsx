@@ -22,7 +22,6 @@ export function Send() {
       fetch("/api/sendmails", {
         method: "POST",
         headers: {
-          Authorization: `Bearer ${process.env.SECRET_KEY as string}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify(mailData),
