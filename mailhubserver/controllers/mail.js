@@ -27,7 +27,7 @@ export const mail = async (req, res, next) => {
 
         res.status(200).json({ message: "sent" });
     } catch (error) {
-        next(error);
-        console.log(error);
+        console.log(`Error sending mail : ${error}, body : ${req.body}`);
+        next(error)
     }
 };
