@@ -11,22 +11,8 @@ class QueueSystem {
         // Initialize the processor, queue, and producer once
         this.emailProcessor = new EmailProcessor();
 
-        
-        // Function to create a chain of DLQs
-        function createDLQChain(processor, concurrency, numberOfDLQs) {
-            let n = numberOfDLQs;
-            let prevDLQ = null;
-            for (let i = 0; i < n; i++) {
-            const retryDelay = (3**(n-i))*1000;
-            if(prevDLQ)console.log(`Retry no. ${n-i} : ${retryDelay/1000} secs`)
-            const curDLQ = new MessageQueue(processor, concurrency, prevDLQ, retryDelay);
-            prevDLQ = curDLQ;
-            }
-            return prevDLQ;
-        }
-
         const numberOfDLQs = 4;
-        const dlqChain = createDLQChain(this.emailProcessor, 5, numberOfDLQs);
+        const dlqChain = this.createDLQChain(this.emailProcessor, 5, numberOfDLQs);
                 
         this.messageQueue = new MessageQueue(this.emailProcessor, 5, dlqChain);
         this.producer = new Producer(this.messageQueue);
@@ -39,6 +25,19 @@ class QueueSystem {
     // Method to access the producer
     getProducer() {
         return this.producer;
+    }
+
+    // Function to create a chain of DLQs
+    createDLQChain(processor, concurrency, numberOfDLQs) {
+        let n = numberOfDLQs;
+        let prevDLQ = null;
+        for (let i = 0; i < n; i++) {
+        const retryDelay = (3**(n-i))*1000;
+        if(prevDLQ)console.log(`Retry no. ${n-i} : ${retryDelay/1000} secs`)
+        const curDLQ = new MessageQueue(processor, concurrency, prevDLQ, retryDelay);
+        prevDLQ = curDLQ;
+        }
+        return prevDLQ;
     }
 }
 

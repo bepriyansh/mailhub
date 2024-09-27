@@ -33,14 +33,14 @@
 // //     producer.produce(`Email ${i}`);
 // // }
 
-// import QueueSystemInstance from "./queueSystem.js";
+import QueueSystemInstance from "./queueSystem.js";
 
-// const producer = QueueSystemInstance.getProducer();
+const producer = QueueSystemInstance.getProducer();
 
-// const id = setInterval(()=>{    
-//     for(let i = 1; i <= 5; i++){
-//         producer.produce(`Email ${i}`);
-//     }
-// },5000);
+const id = setInterval(()=>{    
+    for(let i = 1; i <= 5; i++){
+        producer.produce(`Email ${i}`);
+    }
+},5000);
 
-// setTimeout(()=>clearInterval(id), 31000)
+setTimeout(()=>clearInterval(id), 31000)
