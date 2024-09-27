@@ -5,12 +5,15 @@
 */
 
 export default class MessageQueue {
-    constructor(processor, concurrency = 5) {
+    constructor(processor, concurrency = 5, dlq = null, retryDelay = 500) {
         this.queue = [];                                // Queue to hold messages to be processed
         this.concurrency = concurrency;                 // Max number of parallel tasks
         this.activeWorkers = 0;                         // Track how many workers are currently active
         this.processing = false;                        // Indicates if the queue is being processed
         this.processor = processor;                     // Injected message processor (e.g., EmailProcessor)
+
+        this.retryDelay = retryDelay                    // Retry failed messages after delay
+        this.dlq = dlq;                                 // Dead-letter-queue for retrying failed tasks
     }
 
     // Adds a message to the queue and starts processing if it's not already running.
@@ -36,7 +39,14 @@ export default class MessageQueue {
                         console.log(`Message processed: ${message.id}`);
                     })
                     .catch((error) => {
-                        console.log(`Message failed: ${message.id}, Error: ${error.message}`);
+                        if(this.dlq != null){
+                            console.log(`Message failed : ${message.id}, Error: ${error.message}, Retrying after ${this.retryDelay/1000} secs `);
+                            setTimeout(()=>{
+                                this.dlq.addMessage(message);
+                            }, this.retryDelay);
+                        }else{
+                            console.log(`Message failed: ${message.id}, Error: ${error.message}`);
+                        }
                     })
                     .finally(() => {
                         this.activeWorkers--;

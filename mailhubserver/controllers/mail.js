@@ -1,4 +1,4 @@
-import QueueSystem from "../queue/queueSystem.js";
+import QueueSystemInstance from "../queue/queueSystem.js";
 
 export const mail = async (req, res, next) => {
     const {
@@ -11,7 +11,7 @@ export const mail = async (req, res, next) => {
 
     try {
         // Get the producer from the QueueSystem singleton
-        const producer = QueueSystem.getProducer();
+        const producer = QueueSystemInstance.getProducer();
 
         for (let i = 0; i < recipients.length; i++) {
             const mailData = {
