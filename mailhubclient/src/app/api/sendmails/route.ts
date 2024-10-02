@@ -13,6 +13,7 @@ export async function POST(request: NextRequest) {
     mailPassword: decodedToken.password,
   };
   try {
+    console.log(`${process.env.MAILHUB_SERVER as string}/api/v1/mail`)
     const response = await fetch(`${process.env.MAILHUB_SERVER as string}/api/v1/mail`, {
       method: "POST",
       headers: {
