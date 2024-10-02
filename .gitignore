@@ -4,6 +4,7 @@
 /node_modules
 /mailhubclient/node_modules
 /mailhubserver/node_modules
+/mailhubserver/dist
 /mailhubclient/.pnp
 /mailhubclient/.pnp.js
 /mailhubclient/.yarn/install-state.gz
