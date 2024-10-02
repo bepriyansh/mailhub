@@ -12,7 +12,7 @@ export default class EmailProcessor extends MessageProcessor {
     async process(message: Message): Promise<void> {
         return new Promise<void>((resolve, reject) => {
             setTimeout(() => {
-                sendEmail(message.data).then(resolve).catch(reject);
+                sendEmail(message).then(resolve).catch(reject);
             }, message.delay || 0);
         });
     }

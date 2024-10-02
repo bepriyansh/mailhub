@@ -3,7 +3,6 @@ import QueueSystemInstance from '../queue/QueueSystem';
 
 export const mail = async (req: Request, res: Response, next: NextFunction) => {
   const { recipients, subject, text, mailId, mailPassword } = req.body;
-
   try {
     const producer = QueueSystemInstance.getProducer();
 
