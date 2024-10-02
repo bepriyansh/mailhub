@@ -4,12 +4,16 @@
     Every processor must implement the `process` method.
 */
 
-export default class MessageProcessor {
+export interface Message {
+    id: number;
+    data: any;
+    delay?: number;
+}
+
+export default abstract class MessageProcessor {
     /*
         Abstract method to be implemented by subclasses.
         Throws an error if a subclass does not implement it.
     */
-    async process(message) {
-        throw new Error("process() must be implemented");
-    }
+    abstract process(message: Message): Promise<void>;
 }
