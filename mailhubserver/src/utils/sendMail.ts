@@ -1,5 +1,4 @@
 import nodemailer, { Transporter, SendMailOptions } from "nodemailer";
-import { Message } from "../queue/MessageProcessor";
 
 let transporter: Transporter | undefined;
 
@@ -32,8 +31,8 @@ const createTransporter = (mailId: string, mailPassword: string): Transporter =>
   return transporter!;
 };
 
-export const sendEmail = async (message: Message) => {
-  const { to, subject, text, mailId, mailPassword } = message.data;
+export const sendEmail = async (job: { data: { to: string; subject: string; text: string; mailId: string; mailPassword: string; } }) => {
+  const { to, subject, text, mailId, mailPassword } = job.data;
   transporter = createTransporter(mailId, mailPassword);
 
   const mailOptions: SendMailOptions = {
