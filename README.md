@@ -1,6 +1,6 @@
 # Bulk Email Sender
 
-This project allows you to send emails in bulk by uploading an Excel sheet containing a column with email addresses. The system will automatically detect the emails and you can mail to all recipients.
+This project allows you to send emails in bulk by uploading an Excel sheet containing a column with email addresses. The system will automatically detect the emails, and you can mail all recipients.
 
 ## Installation
 
@@ -13,15 +13,16 @@ npm run ready
 
 ## Start
 
-- First you need to start Docker or Docker Desktop whatever you're using
-- Then start the project by running the given command in project directory 
+- First, you need to start Docker or Docker Desktop, whatever you're using.
+- Then start the project by running the given command in the project directory:
+
 ```bash
 npm start
 ```
 
 ## Architecture
 
-This project utilizes a microservice architecture to handle email sending. The primary components are:
+This project utilizes a custom message queue system built with SOLID principles to handle email sending. The primary components are:
 
 1. **Next.js**: 
     - Handles user authentication.
@@ -30,81 +31,101 @@ This project utilizes a microservice architecture to handle email sending. The p
 
 2. **Node.js server**:
     - Manages the email sending process.
-    - Uses BullMQ for job queueing and processing.
+    - Uses a custom message queue system for job queueing and processing.
     - Uses Nodemailer for sending emails.
 
-3. **BullMQ**:
-    - A job queueing system based on Redis, used to manage the concurrent processing of email sending jobs.
+3. **Custom Message Queue System**:
+    - A message queue system built from scratch following SOLID principles for managing the concurrent processing of email sending jobs.
 
 4. **Nodemailer**:
     - A module for Node.js applications to send emails.
 
-5. **Concurrently**:
-    - A package used to run multiple commands concurrently, specifically using this to start the Redis server, Next.js client, Nodejs server and the BullMQ worker.
+## Custom Message Queue Implementation
 
-## BullMQ Usage
+In this project, a custom message queue system replaces BullMQ. The system follows SOLID principles and provides flexibility, scalability, and error handling through the use of Dead-Letter Queues (DLQs). Here’s how it works:
 
-In the Node.js server, BullMQ is used to manage the email sending process efficiently. Here’s how it works:
+### Queue System
 
-1. **Queue Creation**:
-    - A queue is created to manage the email sending jobs.
+1. **MessageQueue Class**:
+    - Manages the queue and processes messages using a configurable concurrency limit. 
+    - Utilizes DLQs for failed message retries, adhering to the **Single Responsibility** and **Dependency Inversion** principles.
 
-    ```javascript
-    const Queue = require('bullmq').Queue;
-    const emailQueue = new Queue('emailQueue');
-    ```
+2. **MessageProcessor Interface**:
+    - Defines the `process` method that each processor (e.g., EmailProcessor) must implement. This ensures that processors follow the **Open/Closed Principle**, allowing new processors without modifying the base class.
+      
 
-2. **Job Addition**:
-    - When an Excel sheet is uploaded, the emails are extracted and jobs are added to the queue.
+    ```typescript
+    export interface Message {
+        id: number;
+        data: any;
+        delay?: number;
+    }
 
-    ```javascript
-    emails.forEach(email => {
-        emailQueue.add('sendEmail', { email });
-    });
-    ```
-
-3. **Job Processing**:
-    - A worker is created to process the jobs in the queue using BullMQ.
-
-    ```javascript
-    const Worker = require('bullmq').Worker;
-    const nodemailer = require('nodemailer');
-
-    const worker = new Worker('emailQueue', async job => {
-        const { email } = job.data;
-        const transporter = nodemailer.createTransport({
-            // SMTP configuration
-        });
-
-        await transporter.sendMail({
-            from: 'your-email@example.com',
-            to: email,
-            subject: 'Subject Here',
-            text: 'Email Body Here',
-        });
-    });
-    ```
-
-4. **Running Concurrently**:
-    - The `concurrently` package is used to run both the Next.js server and the BullMQ worker.
-
-    ```json
-    "scripts": {
-        "start": "concurrently \"command 1\" \"command 2\"",
+    export default abstract class MessageProcessor {
+        abstract process(message: Message): Promise<void>;
     }
     ```
 
+3. **EmailProcessor Class**:
+    - A specific implementation of `MessageProcessor` that handles email sending using Nodemailer.
+  
 
-By using BullMQ, we can efficiently handle a large number of email sending tasks, ensuring that the system remains responsive and scalable.
+    ```typescript
+    import { sendEmail } from "../utils/sendMail";
+    import MessageProcessor, { Message } from "./MessageProcessor";
+
+    export default class EmailProcessor extends MessageProcessor {
+        async process(message: Message): Promise<void> {
+            return new Promise<void>((resolve, reject) => {
+                setTimeout(() => {
+                    sendEmail(message).then(resolve).catch(reject);
+                }, message.delay || 0);
+            });
+        }
+    }
+    ```
+
+4. **Dead-Letter Queues (DLQs)**:
+    - When a message fails to process, it is retried through multiple DLQs, with increasing delay intervals. This ensures robust handling of failures.
+
+
+    ```typescript
+    private createDLQChain(processor: EmailProcessor, concurrency: number, numberOfDLQs: number): MessageQueue | null {
+        let prevDLQ: MessageQueue | null = null;
+        for (let i = 0; i < numberOfDLQs; i++) {
+            const retryDelay = Math.pow(3, numberOfDLQs - i) * 1000;
+            const curDLQ: MessageQueue = new MessageQueue(processor, concurrency, prevDLQ, retryDelay);
+            prevDLQ = curDLQ;
+        }
+        return prevDLQ;
+    }
+    ```
+
+### Producer
+
+The `Producer` class is responsible for adding messages to the queue.
+
+
+```typescript
+export default class Producer {
+    private queue: MessageQueue;
+
+    constructor(queue: MessageQueue) {
+        this.queue = queue;
+    }
+
+    produce(data: any): void {
+        const message: Message = {
+            id: Date.now(),
+            data: data,
+            delay: 0,
+        };
+        this.queue.addMessage(message);
+    }
+}
+```
+
 
 ## Login
 
 To use the bulk email sender, you need to log in with your credentials. The login method is detailed on the docs page of the website.
-
-## Contribution
-
-Feel free to contribute to this project by opening issues or submitting pull requests.
-
-## License
-
-This project is licensed under the MIT License.
