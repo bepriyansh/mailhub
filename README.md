@@ -13,7 +13,6 @@ npm run ready
 
 ## Start
 
-- First, you need to start Docker or Docker Desktop, whatever you're using.
 - Then start the project by running the given command in the project directory:
 
 ```bash
